@@ -1,0 +1,1104 @@
+/* 
+NOTE: ways to disable drag & drop content in html :
+<div onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">asd</div>
+
+Or
+
+<div onmousedown="return false">asd</div>
+
+Or
+
+<BODY ondragstart="return false;" ondrop="return false;">
+
+And even javascrip, check out https://stackoverflow.com/questions/704564/disable-drag-and-drop-on-html-elements  
+
+*/
+
+/*----- OFFLINE fonts libraries -----*/
+
+@font-face {
+  font-family: JelleeRoman;
+  src: url('fonts/jellee/Jellee-Bold.woff');
+}
+@font-face {
+  font-family: HankenBook;
+  src: url('fonts/hanken/Hanken-Book.ttf');
+}
+@font-face {
+font-family: 'Gilroy-ExtraBold';
+font-style: normal;
+font-weight: normal;
+src: url('fonts/gilroy/gilroy-extrabold.otf');
+src:
+url("fonts/gilroy-extrabold.otf") format("otf"),
+url("fonts/gilroy-extrabold-webfont.woff") format("woff"),
+}
+
+@font-face {
+  font-family: hanley-pro-script;
+  src: url('fonts/hanley/hanley-pro-script.otf');
+}
+@font-face {
+  font-family: the-wild-things-script;
+  src: url('fonts/the-wild-things/the-wild-things-script.otf');
+}
+
+/*----- let's begin now -----*/
+
+*{
+ margin: 0;
+ padding:0;
+ font-family: 'JelleeRoman';
+ font-weight: normal;
+ font-style: normal;
+ scroll-behavior: smooth;
+}
+/* !! fix  horizontal and vertical scrollbars on parent div issue !! */
+html{
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+body{
+  overflow: hidden;
+}
+
+
+#header{       /* auto resize due to elements size so it's no need to adjust */
+ //height:50px;
+ background: rgba(0, 0, 0, 0);  /* #51505F   #34495e old version: #34495e */
+ //padding:0 22px;
+ padding: 28px 10px; /* vfor shrink menu's script */
+ color:#fff;
+ position: fixed;
+ top:0;
+ width:100%;
+ transition: 0.4s;
+ z-index:999;  /* make header cover over "figure img" element */
+}
+
+
+/* custom header */
+#menu-bar {
+	 display: flex;
+	 justify-content: space-evenly;
+	 max-width: 120%;
+	 margin-left: -14px;
+	 margin-top:-30px;
+	 background: #7cc9be;
+	 min-height: 30px;
+	 overflow: hidden;
+}
+ #menu-bar a {
+	 color: #fff;
+	 margin-top: 50px;
+	 text-decoration: none;
+}
+ #menu-bar a:hover {
+	 text-decoration: none;
+}
+ #menu-bar li {
+     list-style-type: none;
+ }
+/* end of custom header */
+
+
+#logo{
+ line-height:40px;
+ float:left;
+ //text-transform: uppercase;
+ margin-left: 24px;
+ transition: 0.4s;
+ font-size:44px;
+}
+#logo a{
+  font-size:auto;
+  color:#fff;
+  text-decoration:none;
+  font-family:'the-wild-things-script'; /* 'Gilroy-ExtraBold' 'hanley-pro-script' */
+  cursor: default;
+ -webkit-user-select: none;
+ -moz-user-select: none;
+ -ms-user-select: none;
+ user-select: none;
+
+ /* make svg and text center to each other's middle using grid */
+  display: grid;
+  grid-auto-flow: column;
+
+}
+#logo a:hover {
+  color: #4AC9C2;
+}
+#owl-logo {
+    //fill: #fff;
+	pointer-events: none;
+	-webkit-animation: 2s ggvnv ease-in-out infinite;
+	animation: 2s ggvnv ease-in-out infinite;
+}
+
+/* animation for both heart and owl-logo */
+@-webkit-keyframes ggvnv{0%,25%,50%,75%,100%{-webkit-transform:scale3d(1,1,1);-ms-transform:scale3d(1,1,1);transform:scale3d(1,1,1);}40%,60%{-webkit-transform:scale3d(1.2,1.2,1.2);-ms-transform:scale3d(1.2,1.2,1.2);transform:scale3d(1.2,1.2,1.2);}} @keyframes ggvnv{0%,25%,50%,75%,100%{-webkit-transform:scale3d(1,1,1);-ms-transform:scale3d(1,1,1);transform:scale3d(1,1,1);}40%,60%{-webkit-transform:scale3d(1.2,1.2,1.2);-ms-transform:scale3d(1.2,1.2,1.2);transform:scale3d(1.2,1.2,1.2);}}
+
+
+.menu{
+ float:right;
+ line-height:40px;
+ //height:50px;
+ align-items:center;
+ //opacity:0.9;
+}
+.menu a{
+ color:#fff;
+ text-transform:uppercase;
+ text-decoration:none;
+ padding:0 10px;
+ font-size: 12px;
+ transition: 0.3s ease;
+ cursor: default;
+ -webkit-user-select: none;
+ -moz-user-select: none;
+ -ms-user-select: none;
+ user-select: none;
+}
+.menu a:hover {
+ color: #34495E;   /* #4AC9C2 */
+ font-size: 13px;  /* make it zoom bigger */
+ background: #fff;
+}
+.show-menu-btn,.hide-menu-btn{
+ transition:0.4s;
+ font-size:30px;
+ cursor:pointer;
+ display:none;
+}
+.show-menu-btn{
+ float:right;
+ margin-right:42px;
+}
+.show-menu-btn:hover {
+ color: #4AC9C2;
+}
+.show-menu-btn i{
+ line-height:40px;
+ margin-right:-10px;
+ font-size:24px;
+}
+.menu a: hover,
+.show-menu-btn:hover,
+.hide-menu-btn:hover{
+ color:#3498db;
+}
+#chk{
+ position:absolute;
+ visibility:hidden;
+ z-index: -1111;
+}
+.content-container{
+ padding:0;
+ /* mini icon pattern bg: this cause bug in php server, work fine on html*/
+ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='487' height='243.5' viewBox='0 0 1600 800' style='&%2310; opacity: .45;&%2310;'%3E%3Cpath fill='%23fdb9a0' d='M1102.5 734.8c2.5-1.2 24.8-8.6 25.6-7.5.5.7-3.9 23.8-4.6 24.5-.2.3-16-12.3-21-17zm123.8-505.7c0-.1-4.9-9.4-7-14.2-.1-.3-.3-1.1-.4-1.6-.1-.4-.3-.7-.6-.9-.3-.2-.6-.1-.8.1l-13.1 12.3c-.2.2-.3.5-.4.8 0 .3 0 .7.2 1 .1.1 1.4 2.5 2.1 3.6 2.4 3.7 6.5 12.1 6.5 12.2.2.3.4.5.7.6.3 0 .5-.1.7-.3 0 0 1.8-2.5 2.7-3.6 1.5-1.6 3-3.2 4.6-4.7 1.2-1.2 1.6-1.4 2.1-1.6.5-.3 1.1-.5 2.5-1.9.4-.5.5-1.3.2-1.8zM33 770.3c0-.7-.5-1.2-1.2-1.2-.1 0-.3 0-.4.1-1.6.2-14.3.1-22.2 0-.3 0-.6.1-.9.4-.2.2-.4.5-.4.9 0 .2 0 4.9.1 5.9l.4 13.6c0 .3.2.6.4.9.2.2.5.3.8.3h.1c7.3-.7 14.7-.9 22-.6.3 0 .7-.1.9-.3.2-.2.4-.6.4-.9-.1-6.1-.1-13.2 0-19.1z' style='&%2310;'/%3E%3Cpath fill='%23fee272' d='M171.1 383.4c1.3-2.5 14.3-22 15.6-21.6.8.3 11.5 21.2 11.5 22.1-.1.3-20.3.1-27.1-.5zm425.3 328.4c-.1-.1-6.7-8.2-9.7-12.5-.2-.3-.5-1-.7-1.5-.2-.4-.4-.7-.7-.8-.3-.1-.6 0-.8.3L574 712c-.2.2-.2.5-.2.9 0 .3.2.7.4.9.1.1 1.8 2.2 2.8 3.1 3.1 3.1 8.8 10.5 8.9 10.6.2.3.5.4.8.4.3 0 .5-.2.6-.5 0 0 1.2-2.8 2-4.1 1.1-1.9 2.3-3.7 3.5-5.5.9-1.4 1.3-1.7 1.7-2 .5-.4 1-.7 2.1-2.4.3-.3.2-1.1-.2-1.6zm131.1-531.9c.6.2 1.3-.2 1.4-.8v-.4c.2-1.4 2.8-12.6 4.5-19.5.1-.3 0-.6-.2-.8-.2-.3-.5-.4-.8-.5-.2 0-4.7-1.1-5.7-1.3l-13.4-2.7c-.3-.1-.7 0-.9.2-.2.2-.4.4-.5.6v.1c-.8 6.5-2.2 13.1-3.9 19.4-.1.3 0 .6.2.9.2.3.5.4.8.5 5.8 1.3 12.7 2.9 18.5 4.3zm1-1.8c-.1-.1-.2-.2-.4-.2.2 0 .3.1.4.2z'/%3E%3Cg fill='%23eac5e7'%3E%3Cpath d='M699.6 472.7c-1.5 0-2.8-.8-3.5-2.3-.8-1.9 0-4.2 1.9-5 3.7-1.6 6.8-4.7 8.4-8.5 1.6-3.8 1.7-8.1.2-11.9-.3-.9-.8-1.8-1.2-2.8-.8-1.7-1.8-3.7-2.3-5.9-.9-4.1-.2-8.6 2-12.8 1.7-3.1 4.1-6.1 7.6-9.1 1.6-1.4 4-1.2 5.3.4 1.4 1.6 1.2 4-.4 5.3-2.8 2.5-4.7 4.7-5.9 7-1.4 2.6-1.9 5.3-1.3 7.6.3 1.4 1 2.8 1.7 4.3l1.5 3.3c2.1 5.6 2 12-.3 17.6-2.3 5.5-6.8 10.1-12.3 12.5-.4.2-.9.3-1.4.3zm40.8-51.3c1.5-.2 3 .5 3.8 1.9 1.1 1.8.4 4.2-1.4 5.3-3.7 2.1-6.4 5.6-7.6 9.5-1.2 4-.8 8.4 1.1 12.1.4.9 1 1.7 1.6 2.7 1 1.7 2.2 3.5 3 5.7 1.4 4 1.2 8.7-.6 13.2-1.4 3.4-3.5 6.6-6.8 10.1-1.5 1.6-3.9 1.7-5.5.2-1.6-1.4-1.7-3.9-.2-5.4 2.6-2.8 4.3-5.3 5.3-7.7 1.1-2.8 1.3-5.6.5-7.9-.5-1.3-1.3-2.7-2.2-4.1-.6-1-1.3-2.1-1.9-3.2-2.8-5.4-3.4-11.9-1.7-17.8 1.8-5.9 5.8-11 11.2-14 .4-.4.9-.6 1.4-.6zM261.3 590.9c5.7 6.8 9 15.7 9.4 22.4.5 7.3-2.4 16.4-10.2 20.4-3 1.5-6.7 2.2-11.2 2.2-7.9-.1-12.9-2.9-15.4-8.4-2.1-4.7-2.3-11.4 1.8-15.9 3.2-3.5 7.8-4.1 11.2-1.6 1.2.9 1.5 2.7.6 3.9-.9 1.2-2.7 1.5-3.9.6-1.8-1.3-3.6.6-3.8.8-2.4 2.6-2.1 7-.8 9.9 1.5 3.4 4.7 5 10.4 5.1 3.6 0 6.4-.5 8.6-1.6 4.7-2.4 7.7-8.6 7.2-15-.5-7.3-5.3-18.2-13-23.9-4.2-3.1-8.5-4.1-12.9-3.1-3.1.7-6.2 2.4-9.7 5-6.6 5.1-11.7 11.8-14.2 19-2.7 7.7-2.1 15.8 1.9 23.9.7 1.4.1 3.1-1.3 3.7-1.4.7-3.1.1-3.7-1.3-4.6-9.4-5.4-19.2-2.2-28.2 2.9-8.2 8.6-15.9 16.1-21.6 4.1-3.1 8-5.1 11.8-6 6-1.4 12 0 17.5 4 2.1 1.7 4.1 3.6 5.8 5.7z'/%3E%3Ccircle cx='1013.7' cy='153.9' r='7.1'/%3E%3Ccircle cx='1024.3' cy='132.1' r='7.1'/%3E%3Ccircle cx='1037.3' cy='148.9' r='7.1'/%3E%3Cpath d='M1508.7 297.2c-4.8-5.4-9.7-10.8-14.8-16.2 5.6-5.6 11.1-11.5 15.6-18.2 1.2-1.7.7-4.1-1-5.2-1.7-1.2-4.1-.7-5.2 1-4.2 6.2-9.1 11.6-14.5 16.9-4.8-5-9.7-10-14.7-14.9-1.5-1.5-3.9-1.5-5.3 0-1.5 1.5-1.5 3.9 0 5.3 4.9 4.8 9.7 9.8 14.5 14.8-1.1 1.1-2.3 2.2-3.5 3.2-4.1 3.8-8.4 7.8-12.4 12-1.4 1.5-1.4 3.8 0 5.3 1.5 1.4 3.9 1.4 5.3-.1 3.9-4 8.1-7.9 12.1-11.7 1.2-1.1 2.3-2.2 3.5-3.3 4.9 5.3 9.8 10.6 14.6 15.9l.2.2c1.4 1.4 3.7 1.5 5.2.2 1.7-1.2 1.8-3.6.4-5.2zM327.6 248.6l-.4-2.6c-1.5-11.1-2.2-23.2-2.3-37 0-5.5 0-11.5.2-18.5v-2.3c0-5 0-11.2 3.9-13.5 2.2-1.3 5.1-1 8.5.9 5.7 3.1 13.2 8.7 17.5 14.9 5.5 7.8 7.3 16.9 5 25.7-3.2 12.3-15 31-30 32.1l-2.4.3zm4.5-69.4c-.2 0-.3 0-.4.1-.1.1-.7.5-1.1 2.7-.3 1.9-.3 4.2-.3 6.3v2.4c-.2 6.9-.2 12.8-.2 18.3.1 12.5.7 23.5 2 33.7 11-2.7 20.4-18.1 23-27.8 1.9-7.2.4-14.8-4.2-21.3-3.9-5.5-10.9-10.6-15.9-13.3-1.4-.8-2.4-1.1-2.9-1.1zM516.3 60.8c-.1 0-.2 0-.4-.1-2.4-.7-4-.9-6.7-.7-.7 0-1.3-.5-1.4-1.2 0-.7.5-1.3 1.2-1.4 3.1-.2 4.9 0 7.6.8.7.2 1.1.9.9 1.6-.2.6-.7 1-1.2 1zm-10.2 9.7c-.5 0-1-.3-1.2-.8-.8-2.1-1.2-4.3-1.3-6.6 0-.7.5-1.3 1.2-1.3s1.3.5 1.3 1.2c.1 2 .5 3.9 1.1 5.8.2.7-.1 1.4-.8 1.6 0 .1-.2.1-.3.1zm-12-6.1c-.4 0-.8-.2-1-.5-.4-.6-.3-1.4.2-1.8 1.8-1.4 3.7-2.6 5.8-3.6.6-.3 1.4 0 1.7.6.3.6 0 1.4-.6 1.7-1.9.9-3.7 2-5.3 3.3-.2.2-.5.3-.8.3zm6.4-9.1c-.5 0-.9-.3-1.2-.7-.5-1-1.2-1.9-2.4-3.4-.3-.4-.7-.9-1.1-1.4-.4-.6-.3-1.4.2-1.8.6-.4 1.4-.3 1.8.2.4.5.8 1 1.1 1.4 1.3 1.6 2.1 2.6 2.7 3.9.3.6 0 1.4-.6 1.7-.1.1-.3.1-.5.1zm6.2-.3c-.3 0-.5-.1-.8-.2-.6-.4-.7-1.2-.3-1.8 1.2-1.7 2.3-3.4 3.3-5.2.3-.6 1.1-.9 1.7-.5.6.3.9 1.1.5 1.7-1 1.9-2.2 3.8-3.5 5.6-.2.2-.5.4-.9.4zm522.6 327.8c-.1 0-.2 0-.4-.1-2.4-.7-4-.9-6.7-.7-.7 0-1.3-.5-1.4-1.2 0-.7.5-1.3 1.2-1.4 3.1-.2 4.9 0 7.6.8.7.2 1.1.9.9 1.6-.2.6-.7 1-1.2 1zm-10.2 9.7c-.5 0-1-.3-1.2-.8-.8-2.1-1.2-4.3-1.3-6.6 0-.7.5-1.3 1.2-1.3s1.3.5 1.3 1.2c.1 2 .5 3.9 1.1 5.8.2.7-.1 1.4-.8 1.6 0 .1-.2.1-.3.1zm-12-6.1c-.4 0-.8-.2-1-.5-.4-.6-.3-1.4.2-1.8 1.8-1.4 3.7-2.6 5.8-3.6.6-.3 1.4 0 1.7.6.3.6 0 1.4-.6 1.7-1.9.9-3.7 2-5.3 3.3-.2.2-.5.3-.8.3zm6.4-9.1c-.5 0-.9-.3-1.2-.7-.5-1-1.2-1.9-2.4-3.4-.3-.4-.7-.9-1.1-1.4-.4-.6-.3-1.4.2-1.8.6-.4 1.4-.3 1.8.2.4.5.8 1 1.1 1.4 1.3 1.6 2.1 2.6 2.7 3.9.3.6 0 1.4-.6 1.7-.1.1-.3.1-.5.1zm6.2-.3c-.3 0-.5-.1-.8-.2-.6-.4-.7-1.2-.3-1.8 1.2-1.7 2.3-3.4 3.3-5.2.3-.6 1.1-.9 1.7-.5.6.3.9 1.1.5 1.7-1 1.9-2.2 3.8-3.5 5.6-.2.2-.5.4-.9.4zm310 196.4c-1.4 0-2.9-.2-4.5-.7-8.4-2.7-16.6-12.7-18.7-20-.4-1.4-.7-2.9-.9-4.4-8.1 3.3-15.5 10.6-15.4 21 0 1.5-1.2 2.7-2.7 2.8-1.5 0-2.7-1.2-2.7-2.7-.1-6.7 2.4-12.9 7-18 3.6-4 8.4-7.1 13.7-8.8.5-6.5 3.1-12.9 7.4-17.4 7-7.4 18.2-8.9 27.3-10.1l.7-.1c1.5-.2 2.9.9 3.1 2.3.2 1.5-.9 2.9-2.3 3.1l-.7.1c-8.6 1.2-18.4 2.5-24 8.4-3 3.2-5 7.7-5.7 12.4 7.9-1 17.7 1.3 24.3 5.7 4.3 2.9 7.1 7.8 7.2 12.7.2 4.3-1.7 8.3-5.2 11.1-2.4 1.6-5 2.6-7.9 2.6zm-18.7-26.7c.1 1.5.4 3 .8 4.4 1.7 5.8 8.7 14.2 15.1 16.3 2.8.9 5.1.5 7.2-1.1 2.7-2.1 3.2-4.8 3.1-6.6-.1-3.2-2-6.4-4.8-8.3-5.7-3.9-14.7-5.8-21.4-4.7z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.content-container img{
+ //height:450px;
+ //max-width:700px;
+ margin:0;
+ user-select: none; /* disable click */
+}
+.headpic{
+ z-index: 1; /* very bottom */
+ height: 50vh;
+}
+.img-inside-headpic{
+ width: 36%;
+ position:absolute;
+ top: 26%;
+ right: 8%;
+ z-index: 2;
+}
+.content-container p{
+ color:#606060;
+ font-size:16px;
+ line-height:1.4;
+ margin: 10px 8px 22px 8px;
+ padding:0 20px;
+ text-align:justify;
+ font-family: 'HankenBook';      /* HankenLight */   /* Hanken */   /* HankenBook */
+}
+@media screen and (max-width:800px) {
+ .show-menu-btn, .hide-menu-btn{
+   display:block;
+ }
+ .menu{
+   position:fixed;
+   width:100%;
+   height:100vh;
+   /* white glass */
+   background: rgba(81,80,95,0.35); /* #333 */
+   backdrop-filter: blur(20px); /* blur the glass */
+   -webkit-backdrop-filter: blur(20px); /* for safari work */
+   right:-100%;
+   top:0;
+   text-align:center;
+   padding:80px 0;
+   line-height: normal;
+   transition:0.3s;
+ }
+ .menu a{
+   display:block;
+   padding:20px;
+ }
+ .hide-menu-btn{
+   position:absolute;
+   top:20px;
+   right:28px;
+ }
+ #chk:checked ~ .menu{
+   right:0;
+ }
+}
+/* dropdown list */
+.dropdown-container {
+  width: 99px;
+  border-radius: 3px;
+  //margin: 40px auto;
+  //background: #fff;
+  min-height: 30px;
+  text-align: center;
+  position: relative;
+}
+.dropdown-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+.dropdown-container label {
+  position: relative;
+  display: block;
+  width: 100%;
+  //line-height: 30px;
+  cursor: pointer;
+  //background: #446cb3;
+  background: rgba(81,80,95,0.35); /* #333 */
+  backdrop-filter: blur(20px); /* blur the glass */
+  -webkit-backdrop-filter: blur(20px); /* for safari work */
+  color: white;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.dropdown-container label:hover {
+  background: #365690;
+}
+.dropdown-container label:after {
+  content: "›";
+  position: absolute;
+  width: 40px;
+  font-size: 32px;
+  right: 0;
+  padding-left: 0px;
+  top: 0;
+  bottom: 0;
+  transform: rotate(90deg);
+}
+.dropdown-container .dropdown-content {
+  height: 0;
+  max-height: 0px;
+  margin: 0;
+  text-align: left;
+  overflow: hidden;
+  transition: 0.3s linear;
+  position: absolute;
+  z-index: 999;
+  background: rgba(81,80,95,0.35); /* #333 */
+  backdrop-filter: blur(20px); /* blur the glass */
+  -webkit-backdrop-filter: blur(20px); /* for safari work */
+}
+.dropdown-container .dropdown-content li {
+  padding: 3px 10px;
+}
+.dropdown-container .dropdown-content li:first-child {
+  padding-top: 10px;
+}
+.dropdown-container .dropdown-content li:last-child {
+  padding-bottom: 10px;
+}
+.dropdown-container #drop {
+  display: none;
+}
+.dropdown-container #drop:checked ~ .dropdown-content {
+  height: auto;
+  width: 100%;
+  max-height: 900px;
+  transition: max-height 1s ease-in;
+  overflow: hidden;
+}
+/* end of dropdown list */
+
+h1{
+ color: #9833F1;   /* #566984 */
+ font-size:20px;
+ margin:30px 20px 10px 20px;
+}
+h5{
+ color: #FF8B69;    /*#d3d3d3 */
+ font-size:13px;
+ margin:18px 20px 2px 8px;
+ padding:0 20px;
+}
+.about-border {
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #19BA97;  /*#4FB6FE */
+    margin: auto;
+    padding:0;
+    margin-top:0;
+    border-radius:2px;
+}
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #242f3f;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  position: relative;
+  top:0;
+  border: 6px solid #Fff;
+  animation: loader 2s infinite ease;
+}
+.loader-inner {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  background-color: #fff;
+  animation: loader-inner 2s infinite ease-in;
+}
+@keyframes loader{
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader-inner {
+  0% {
+    height: 0%;
+  }
+  25% {
+    height: 0%;
+  }
+  50% {
+    height: 100%;
+  }
+  75% {
+    height: 100%;
+  }
+  100% {
+    height: 0%;
+  }
+}
+
+/*--- setup for mobile device ---*/
+
+@media screen and (max-width:800px) {
+ /*----- [content] ------*/
+  .content-container img {
+    width: 100%;
+    height: auto;
+  }
+  .content-container .img-inside-headpic {
+    width: 36%;
+  }
+  .content-container .headpic {
+    width: 100%;
+    height: 50vh;
+  }
+ /*----- [code img] ------*/
+ .code-img-container a{
+	 width:86%;
+ }
+/*----- [macbookimg] -----*/
+ .macbookimg {
+	width:350px;
+    height:410px;
+ }
+ /*----- [preloader] -----*/
+ .loader{
+   width:22px;
+   height:22px;
+   top:0;
+   border: 4px solid #fff;
+ }
+
+ /*----- [appbox] -----*/
+   /*----- [appbox] -----*/
+.appbox {
+  margin: 10px 10px 10px 10px;
+  width: 82vw ; /* 82% of viewport width */
+  }
+
+  /*----- [apptextbox] -----*/
+.appbox .apptextbox{
+  float:right;
+  //margin-top: -10px;
+  min-height:50px;
+  overflow: hidden;
+  max-width:150px;
+  font-size: 16px;
+  display: inline-block;
+  font-family: 'HankenBook';
+  color: #9D6D49;   /* #6200EA #687734 #9D6D49 */
+  font-weight:bold;
+  z-index:2;
+  }
+  /*------------------------*/
+
+}
+/*------------------------------------------*/
+
+/*------------- setup for desktop device [content] ------------*/
+@media screen and (min-width: 801px) {
+.menu {
+ margin-right:80px;
+ display: flex;
+}
+.content-container p{
+ color:#606060;
+ font-size:16px;
+ margin: 10px 200px 20px 190px;
+ padding:0 20px;
+}
+.code-img-container a {
+	width:54%;
+}
+/*----- [macbookimg] -----*/
+ .macbookimg {
+	width:700px;
+    height:720px;
+ }
+h5{
+ color:#FF8B69;   /*#d3d3d3 */
+ font-size:13px;
+ margin:18px 200px 2px 190px;
+ padding:0 20px;
+}
+h1{
+ color: #9833F1;   /* #566984 */
+ margin:30px 20px 10px 20px;
+}
+.content-container img {
+ max-width:100%; /* Display original size of img */ /* use width:100%; to make img stretch to width of the screen */
+ height:auto;
+}
+/*streatch image*/
+.figure{
+   width:100%; /*container-width*/
+   overflow:hidden; /*hide bounds of image */
+   margin:0;   /*reset margin of figure tag*/
+}
+.figure img{
+   display:block; /*remove inline-block spaces*/
+   width:100%; /*make image streatch*/
+   /*add to other styles*/
+   margin:-15% 0;
+   z-index: 1;  /* make this element be covered by header */
+}
+/* end of treatch image*/
+
+
+}
+/*---------------------------------------*/
+
+.favorite-site-link a{
+  color: #1FC0BF; //** #0091AD **//
+  padding-bottom:3px;
+  text-decoration:none;
+  border-bottom: 2px solid #fad541;
+  font-weight:bold;
+  font-size:15px;
+  //display:block;
+  //border-radius:4px;
+  padding:2px;
+  transition: all 0.3s ease;
+}
+.favorite-site-link a:hover{
+  background-color: #FAD541;
+  color: #0091AD
+}
+/* footer */
+footer {
+		padding: 1em 0 1em 0 ;
+		background-color: #1d242a;
+		text-align: center;
+	}
+footer .icons {
+		font-size: 1.25em;
+       margin:20px auto;
+	}
+footer p {
+       color: rgba(255, 230, 255, 0.3);
+       font-size: 15px;
+	   margin:22px auto;
+	   text-align: center;
+	   user-select: none;
+   }
+footer li {
+       margin: 8px;
+       display: inline;
+       list-style-type: none;
+}
+footer .icons a {
+		color: rgba(255, 255, 255, 0.5);
+	}
+footer .icons a:hover {
+		color: #fff;
+	}
+footer .copyright {
+			color: rgba(255, 255, 255, 0.5);
+			font-size: 0.8em;
+			letter-spacing: 0.200em;
+			list-style: none;
+			padding: 0;
+			user-select: none;
+	}
+footer .copyright li {
+				border-left: solid 1px rgba(255, 255, 255, 0.5);
+				display: inline-block;
+				line-height: 1em;
+				margin-left: 1em;
+				padding-left: 1em;
+   }
+footer .copyright a {
+          text-decoration: none;
+          color: #fff;
+          text-transform: none;
+   }
+/* Footer Icons */
+footer a{
+		text-decoration: none;
+		border-bottom: none;
+		position: relative;
+       margin:2px;
+   }
+.content2{
+  margin-top:-2px;
+  padding:0;
+  padding-bottom:20px;
+  background-color:black;
+  width:100%;
+  height:auto;
+}
+h4{
+ color: white;
+ font-size:16px;
+ margin:0 20px 20px 20px;
+ letter-spacing:1px;
+}
+/* custom highlighted text color */
+::-moz-selection {
+background-color: #BA9EB0;
+color: #ffffff;
+}
+
+::selection {
+background-color: #BA9EB0;
+color: #fff;
+}
+
+/*streatch image*/
+.figure{
+   width:100%; /*container-width*/
+   overflow:hidden; /*hide bounds of image */
+   margin:0;   /*reset margin of figure tag*/
+}
+.figure img{
+   display:block; /*remove inline-block spaces*/
+   width:100%; /*make image streatch*/
+   /*add to other styles*/
+   margin:-15% 0;
+}
+/* end of treatch image*/
+
+
+/* CUSTOM SCROLLBAR */
+
+body::-webkit-scrollbar {background-color:#fff;width:16spx;}
+body::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+body::-webkit-scrollbar-thumb {background-color:#babac0;border-radius:16px;border:4px solid white}
+/* another eg
+::-webkit-scrollbar {
+   width: 30px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background: -webkit-gradient(linear,left top,left bottom,from(#ff8a00),to(#da1b60));
+  box-shadow: inset 2px 2px 2px rgba(255,255,255,.25), inset -2px -2px 2px rgba(0,0,0,.25);}
+*/
+
+
+/* END OF CUSTOM SCROLLBAR */
+
+/*   APPBOX    */
+.appbox {
+  position: relative;
+  //display: flex;
+  //justify-content: center;
+  /*flex-direction:column;*/
+  //float: left;
+  /* align-items:center; */
+  background-color: rgba(215, 215, 215, 0.6);
+  width: 70vw;
+  /* width: 55vh ; for mobile */
+  height: fit; /* fit due to text length */
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  padding: 15px 15px 15px 15px;
+  /* top, right, bottom, left*/
+  margin: 10px 10px 10px 10px;
+  margin: auto;
+  //border-left: solid 4px #3498db;
+  text-align: left;
+  text-decoration: none!important;
+  //color: #555555!important;
+  //text-align: center; /* make text center */
+  margin-top: 24px;
+
+
+}
+.appbox:hover {
+  animation: GoAnimate 4s infinite;
+  color:#fff;
+}
+.appbox .appbox_image {
+  display: inline-block;
+  margin:5px;
+  width: 100px ; /* also adjust the icon size */
+  height: 80px ;
+  font-size: 12px;
+  float:left;
+}
+.appbox .appbox_image,
+.appbox .appbox_text {
+  display: inline-block;
+  font-size: 20px;
+  text-align: left;
+  float: none!important;
+  clear: both!important;
+  margin-bottom:2px;
+}
+@keyframes GoAnimate {
+  0% { background-color:#f080b8; //opacity:1; }
+  25% { background-color:#f08080; }
+  50% { background-color:#f0b880; }
+  75% { background-color:#80b8f0; }
+  100% { background-color:#8080f0; //opacity:0; }
+}
+
+.appbox .apptextbox{
+  //margin-top: 30px;
+  min-height:50px;
+  //overflow: hidden;
+  max-width:150px;
+  font-size: 18px;
+  display: inline-block;
+  font-family: 'HankenBook';
+  color: #9D6D49;   /* #6200EA #687734 #9D6D49 */
+  font-weight:bold;
+  z-index:2;
+  position: absolute;
+}
+.appbox .apptextbox p{
+  font-family: 'HankenBook';
+  color: #9D6D49;
+  font-size: 18px;
+  margin: auto;
+}
+
+/*    END OF APPBOX    */
+
+
+/* ########################## */
+/*  Page Animation settings   */
+/* ########################## */
+
+/*=== Optional Delays, change values here  ===*/
+.one {
+-webkit-animation-delay: 0.4s;
+-moz-animation-delay: 0.4s;
+animation-delay: 0.4s;
+}
+
+.two {
+-webkit-animation-delay: 0.6s;
+-moz-animation-delay: 0.6s;
+animation-delay: 0.6s;
+}
+
+.three {
+-webkit-animation-delay: 1.1s;
+-moz-animation-delay: 1.1s;
+animation-delay: 1.1s;
+}
+
+
+
+/*=== Trigger  ===*/
+.animate {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+
+/*=== Animations start here  ===*/
+
+/*==== FADE IN UP ===*/
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+ }
+@-webkit-keyframes fadeInDown {
+0% {
+	opacity: 0;
+	-webkit-transform: translate3d(0, -100%, 0);
+	transform: translate3d(0, -100%, 0);
+}
+100% {
+	opacity: 1;
+	-webkit-transform: none;
+	transform: none;
+}
+}
+@keyframes fadeInDown {
+0% {
+	opacity: 0;
+	-webkit-transform: translate3d(0, -100%, 0);
+	transform: translate3d(0, -100%, 0);
+}
+100% {
+	opacity: 1;
+	-webkit-transform: none;
+	transform: none;
+}
+}
+
+/* ############################## */
+/* END OF PAGE AMINATION SETTINGS */
+/* ############################## */
+
+
+
+/* ############  Made with luv  ############# */
+
+.FooterLove__LoveWrapper-qovlra-0 {
+--fontBase: Lomino, LominoSubset, "open-sans", sans-serif;
+--fontHeadline: Lomino, LominoSubset, "open-sans", sans-serif;
+text-align: center;
+box-sizing: border-box;
+--webkit-tap-highlight-color: rgba(0,0,0,0);
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+letter-spacing: 0;
+color: #717171;
+cursor: default;
+user-select: none;
+order: 2;
+}
+
+.hOulRu {
+    color: #717171;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-order: 2;
+    -ms-flex-order: 2;
+    order: 2;
+	display: flex;
+	justify-content: center;
+	//align-items: center;
+}
+
+/* sc-component-id: IconSwitch__HeartWrapper-sc-373fu6-0 */
+
+.cePlFz {
+	width: 16px;
+	height: 16px;
+	margin: -4px 6px 0;
+	fill: #f12742;
+	pointer-events: none;
+	-webkit-animation: 2s ggvnv ease-in-out infinite;
+	animation: 2s ggvnv ease-in-out infinite;
+}
+
+/* sc-component-id: IconSwitch__HeartWrapper-sc-373fu6-0 */
+
+.cePlFz {
+	width: 16px;
+	height: 16px;
+	margin: -4px 6px 0;
+	fill: #f12742;
+	pointer-events: none;
+	-webkit-animation: 2s ggvnv ease-in-out infinite;
+	animation: 2s ggvnv ease-in-out infinite;
+}
+
+    /* sc-component-id: sc-keyframes-ggvnv */
+    @-webkit-keyframes ggvnv{0%,25%,50%,75%,100%{-webkit-transform:scale3d(1,1,1);-ms-transform:scale3d(1,1,1);transform:scale3d(1,1,1);}40%,60%{-webkit-transform:scale3d(1.2,1.2,1.2);-ms-transform:scale3d(1.2,1.2,1.2);transform:scale3d(1.2,1.2,1.2);}} @keyframes ggvnv{0%,25%,50%,75%,100%{-webkit-transform:scale3d(1,1,1);-ms-transform:scale3d(1,1,1);transform:scale3d(1,1,1);}40%,60%{-webkit-transform:scale3d(1.2,1.2,1.2);-ms-transform:scale3d(1.2,1.2,1.2);transform:scale3d(1.2,1.2,1.2);}}
+
+/* ############  End of Made with luv  ############# */
+
+
+
+
+/* menu social svg */
+.in_mobile_menu_social_svg {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+.in_mobile_menu_social_svg svg {
+  margin: 14px;
+}
+
+/* footer social svg */
+footer .social-svg {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+footer .social-svg svg {
+  margin: 14px;
+}
+
+
+
+
+/*------------- setup for desktop device [menu social svg] ------------*/
+@media screen and (min-width: 801px) {
+  .menu .in_mobile_menu_social_svg {
+    display: none;
+  }        /* this function cause the 3rd svg of the footer to disappear :(( */
+
+}
+
+/*------------------ footer text fade transition -------------------*/
+.nametag{
+  //margin-top:0px;
+  margin: 1px 3px 0 6px;
+  color: #e39ff6; /* #e9d66b  #c660ce */
+}
+
+.nametag:nth-child(1){
+  animation-name: fade;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-duration: 3s;
+  animation-direction: alternate-reverse;
+  position: absolute;
+}
+
+.nametag:nth-child(2){
+  animation-name: fade;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-duration: 3s;
+  animation-direction: alternate;
+  position: absolute;
+}
+
+
+@keyframes fade{
+    0%,45% {
+      opacity: 0;
+}
+    100%{
+      opacity: 1;
+  }
+}
+.nametag-box{
+}
+/*-----------------------------------------------*/
+
+
+
+/* Hamburger
+*******************************/
+.wrapper-menu {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 330ms ease-out;
+    position: fixed;
+    right: 25px;
+    top: 20px;
+    z-index: 50;
+}
+
+.wrapper-menu.open {
+  transform: rotate(-45deg);  
+  -webkit-transform: rotate(-45deg); /* for IOS, Android, Chrome, Safari */
+  -webkit-transform: -webkit-rotate(-45deg);  
+  -ms-transform: rotate(-45deg);     /* for Internet Explorer */
+  -moz-transform: rotate(-45deg);    /* for Firefox */
+  -o-transform: rotate(-45deg);      /* for Opera */
+}
+
+.line-menu {
+  background-color: #fff;     /* #222*/
+  border-radius: 8px;
+  width: 100%;
+  height: 5px;
+}
+
+.line-menu.half {
+  width: 50%;
+}
+
+.line-menu.start {
+  transition: transform 330ms cubic-bezier(0.54, -0.81, 0.57, 0.57);
+  transform-origin: right;
+}
+
+.open .line-menu.start {
+  transform: rotate(-90deg) translateX(3px);
+  -webkit-transform: rotate(-90deg) translateX(3px);
+  -ms-transform: rotate(-90deg) translateX(3px);
+}
+
+.line-menu.end {
+  align-self: flex-end;
+  transition: transform 330ms cubic-bezier(0.54, -0.81, 0.57, 0.57);
+  transform-origin: left;
+}
+
+.open .line-menu.end {
+  transform: rotate(-90deg) translateX(-3px);
+}
+
+
+/*--- setup for mobile device(hamburger) ---*/
+
+@media screen and (max-width:1300px) {
+ /* iPhone 6 Plus browser max-width (<---->) is ~ 1300px */
+ /*----- [hamburger menu button] -----*/
+ .wrapper-menu {
+    width: 24px;
+    height: 24px;
+    right: 22px;
+    top: 18px;
+ }
+ .line-menu {
+  border-radius: 10px;
+  height: 5.5px;
+ }
+
+}
+
+
+/*--- code img container class (center the flex item in a column) ---*/ 
+.code-img-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* to solve these problems, consult this page : https://viblo.asia/p/bo-cuc-component-react-native-voi-flexbox-ByEZkpBglQ0  */
+  
+  /* mini icon pattern bg : (this damn cause bug in php server*/
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='487' height='243.5' viewBox='0 0 1600 800' style='&%2310; opacity: .45;&%2310;'%3E%3Cpath fill='%23fdb9a0' d='M1102.5 734.8c2.5-1.2 24.8-8.6 25.6-7.5.5.7-3.9 23.8-4.6 24.5-.2.3-16-12.3-21-17zm123.8-505.7c0-.1-4.9-9.4-7-14.2-.1-.3-.3-1.1-.4-1.6-.1-.4-.3-.7-.6-.9-.3-.2-.6-.1-.8.1l-13.1 12.3c-.2.2-.3.5-.4.8 0 .3 0 .7.2 1 .1.1 1.4 2.5 2.1 3.6 2.4 3.7 6.5 12.1 6.5 12.2.2.3.4.5.7.6.3 0 .5-.1.7-.3 0 0 1.8-2.5 2.7-3.6 1.5-1.6 3-3.2 4.6-4.7 1.2-1.2 1.6-1.4 2.1-1.6.5-.3 1.1-.5 2.5-1.9.4-.5.5-1.3.2-1.8zM33 770.3c0-.7-.5-1.2-1.2-1.2-.1 0-.3 0-.4.1-1.6.2-14.3.1-22.2 0-.3 0-.6.1-.9.4-.2.2-.4.5-.4.9 0 .2 0 4.9.1 5.9l.4 13.6c0 .3.2.6.4.9.2.2.5.3.8.3h.1c7.3-.7 14.7-.9 22-.6.3 0 .7-.1.9-.3.2-.2.4-.6.4-.9-.1-6.1-.1-13.2 0-19.1z' style='&%2310;'/%3E%3Cpath fill='%23fee272' d='M171.1 383.4c1.3-2.5 14.3-22 15.6-21.6.8.3 11.5 21.2 11.5 22.1-.1.3-20.3.1-27.1-.5zm425.3 328.4c-.1-.1-6.7-8.2-9.7-12.5-.2-.3-.5-1-.7-1.5-.2-.4-.4-.7-.7-.8-.3-.1-.6 0-.8.3L574 712c-.2.2-.2.5-.2.9 0 .3.2.7.4.9.1.1 1.8 2.2 2.8 3.1 3.1 3.1 8.8 10.5 8.9 10.6.2.3.5.4.8.4.3 0 .5-.2.6-.5 0 0 1.2-2.8 2-4.1 1.1-1.9 2.3-3.7 3.5-5.5.9-1.4 1.3-1.7 1.7-2 .5-.4 1-.7 2.1-2.4.3-.3.2-1.1-.2-1.6zm131.1-531.9c.6.2 1.3-.2 1.4-.8v-.4c.2-1.4 2.8-12.6 4.5-19.5.1-.3 0-.6-.2-.8-.2-.3-.5-.4-.8-.5-.2 0-4.7-1.1-5.7-1.3l-13.4-2.7c-.3-.1-.7 0-.9.2-.2.2-.4.4-.5.6v.1c-.8 6.5-2.2 13.1-3.9 19.4-.1.3 0 .6.2.9.2.3.5.4.8.5 5.8 1.3 12.7 2.9 18.5 4.3zm1-1.8c-.1-.1-.2-.2-.4-.2.2 0 .3.1.4.2z'/%3E%3Cg fill='%23eac5e7'%3E%3Cpath d='M699.6 472.7c-1.5 0-2.8-.8-3.5-2.3-.8-1.9 0-4.2 1.9-5 3.7-1.6 6.8-4.7 8.4-8.5 1.6-3.8 1.7-8.1.2-11.9-.3-.9-.8-1.8-1.2-2.8-.8-1.7-1.8-3.7-2.3-5.9-.9-4.1-.2-8.6 2-12.8 1.7-3.1 4.1-6.1 7.6-9.1 1.6-1.4 4-1.2 5.3.4 1.4 1.6 1.2 4-.4 5.3-2.8 2.5-4.7 4.7-5.9 7-1.4 2.6-1.9 5.3-1.3 7.6.3 1.4 1 2.8 1.7 4.3l1.5 3.3c2.1 5.6 2 12-.3 17.6-2.3 5.5-6.8 10.1-12.3 12.5-.4.2-.9.3-1.4.3zm40.8-51.3c1.5-.2 3 .5 3.8 1.9 1.1 1.8.4 4.2-1.4 5.3-3.7 2.1-6.4 5.6-7.6 9.5-1.2 4-.8 8.4 1.1 12.1.4.9 1 1.7 1.6 2.7 1 1.7 2.2 3.5 3 5.7 1.4 4 1.2 8.7-.6 13.2-1.4 3.4-3.5 6.6-6.8 10.1-1.5 1.6-3.9 1.7-5.5.2-1.6-1.4-1.7-3.9-.2-5.4 2.6-2.8 4.3-5.3 5.3-7.7 1.1-2.8 1.3-5.6.5-7.9-.5-1.3-1.3-2.7-2.2-4.1-.6-1-1.3-2.1-1.9-3.2-2.8-5.4-3.4-11.9-1.7-17.8 1.8-5.9 5.8-11 11.2-14 .4-.4.9-.6 1.4-.6zM261.3 590.9c5.7 6.8 9 15.7 9.4 22.4.5 7.3-2.4 16.4-10.2 20.4-3 1.5-6.7 2.2-11.2 2.2-7.9-.1-12.9-2.9-15.4-8.4-2.1-4.7-2.3-11.4 1.8-15.9 3.2-3.5 7.8-4.1 11.2-1.6 1.2.9 1.5 2.7.6 3.9-.9 1.2-2.7 1.5-3.9.6-1.8-1.3-3.6.6-3.8.8-2.4 2.6-2.1 7-.8 9.9 1.5 3.4 4.7 5 10.4 5.1 3.6 0 6.4-.5 8.6-1.6 4.7-2.4 7.7-8.6 7.2-15-.5-7.3-5.3-18.2-13-23.9-4.2-3.1-8.5-4.1-12.9-3.1-3.1.7-6.2 2.4-9.7 5-6.6 5.1-11.7 11.8-14.2 19-2.7 7.7-2.1 15.8 1.9 23.9.7 1.4.1 3.1-1.3 3.7-1.4.7-3.1.1-3.7-1.3-4.6-9.4-5.4-19.2-2.2-28.2 2.9-8.2 8.6-15.9 16.1-21.6 4.1-3.1 8-5.1 11.8-6 6-1.4 12 0 17.5 4 2.1 1.7 4.1 3.6 5.8 5.7z'/%3E%3Ccircle cx='1013.7' cy='153.9' r='7.1'/%3E%3Ccircle cx='1024.3' cy='132.1' r='7.1'/%3E%3Ccircle cx='1037.3' cy='148.9' r='7.1'/%3E%3Cpath d='M1508.7 297.2c-4.8-5.4-9.7-10.8-14.8-16.2 5.6-5.6 11.1-11.5 15.6-18.2 1.2-1.7.7-4.1-1-5.2-1.7-1.2-4.1-.7-5.2 1-4.2 6.2-9.1 11.6-14.5 16.9-4.8-5-9.7-10-14.7-14.9-1.5-1.5-3.9-1.5-5.3 0-1.5 1.5-1.5 3.9 0 5.3 4.9 4.8 9.7 9.8 14.5 14.8-1.1 1.1-2.3 2.2-3.5 3.2-4.1 3.8-8.4 7.8-12.4 12-1.4 1.5-1.4 3.8 0 5.3 1.5 1.4 3.9 1.4 5.3-.1 3.9-4 8.1-7.9 12.1-11.7 1.2-1.1 2.3-2.2 3.5-3.3 4.9 5.3 9.8 10.6 14.6 15.9l.2.2c1.4 1.4 3.7 1.5 5.2.2 1.7-1.2 1.8-3.6.4-5.2zM327.6 248.6l-.4-2.6c-1.5-11.1-2.2-23.2-2.3-37 0-5.5 0-11.5.2-18.5v-2.3c0-5 0-11.2 3.9-13.5 2.2-1.3 5.1-1 8.5.9 5.7 3.1 13.2 8.7 17.5 14.9 5.5 7.8 7.3 16.9 5 25.7-3.2 12.3-15 31-30 32.1l-2.4.3zm4.5-69.4c-.2 0-.3 0-.4.1-.1.1-.7.5-1.1 2.7-.3 1.9-.3 4.2-.3 6.3v2.4c-.2 6.9-.2 12.8-.2 18.3.1 12.5.7 23.5 2 33.7 11-2.7 20.4-18.1 23-27.8 1.9-7.2.4-14.8-4.2-21.3-3.9-5.5-10.9-10.6-15.9-13.3-1.4-.8-2.4-1.1-2.9-1.1zM516.3 60.8c-.1 0-.2 0-.4-.1-2.4-.7-4-.9-6.7-.7-.7 0-1.3-.5-1.4-1.2 0-.7.5-1.3 1.2-1.4 3.1-.2 4.9 0 7.6.8.7.2 1.1.9.9 1.6-.2.6-.7 1-1.2 1zm-10.2 9.7c-.5 0-1-.3-1.2-.8-.8-2.1-1.2-4.3-1.3-6.6 0-.7.5-1.3 1.2-1.3s1.3.5 1.3 1.2c.1 2 .5 3.9 1.1 5.8.2.7-.1 1.4-.8 1.6 0 .1-.2.1-.3.1zm-12-6.1c-.4 0-.8-.2-1-.5-.4-.6-.3-1.4.2-1.8 1.8-1.4 3.7-2.6 5.8-3.6.6-.3 1.4 0 1.7.6.3.6 0 1.4-.6 1.7-1.9.9-3.7 2-5.3 3.3-.2.2-.5.3-.8.3zm6.4-9.1c-.5 0-.9-.3-1.2-.7-.5-1-1.2-1.9-2.4-3.4-.3-.4-.7-.9-1.1-1.4-.4-.6-.3-1.4.2-1.8.6-.4 1.4-.3 1.8.2.4.5.8 1 1.1 1.4 1.3 1.6 2.1 2.6 2.7 3.9.3.6 0 1.4-.6 1.7-.1.1-.3.1-.5.1zm6.2-.3c-.3 0-.5-.1-.8-.2-.6-.4-.7-1.2-.3-1.8 1.2-1.7 2.3-3.4 3.3-5.2.3-.6 1.1-.9 1.7-.5.6.3.9 1.1.5 1.7-1 1.9-2.2 3.8-3.5 5.6-.2.2-.5.4-.9.4zm522.6 327.8c-.1 0-.2 0-.4-.1-2.4-.7-4-.9-6.7-.7-.7 0-1.3-.5-1.4-1.2 0-.7.5-1.3 1.2-1.4 3.1-.2 4.9 0 7.6.8.7.2 1.1.9.9 1.6-.2.6-.7 1-1.2 1zm-10.2 9.7c-.5 0-1-.3-1.2-.8-.8-2.1-1.2-4.3-1.3-6.6 0-.7.5-1.3 1.2-1.3s1.3.5 1.3 1.2c.1 2 .5 3.9 1.1 5.8.2.7-.1 1.4-.8 1.6 0 .1-.2.1-.3.1zm-12-6.1c-.4 0-.8-.2-1-.5-.4-.6-.3-1.4.2-1.8 1.8-1.4 3.7-2.6 5.8-3.6.6-.3 1.4 0 1.7.6.3.6 0 1.4-.6 1.7-1.9.9-3.7 2-5.3 3.3-.2.2-.5.3-.8.3zm6.4-9.1c-.5 0-.9-.3-1.2-.7-.5-1-1.2-1.9-2.4-3.4-.3-.4-.7-.9-1.1-1.4-.4-.6-.3-1.4.2-1.8.6-.4 1.4-.3 1.8.2.4.5.8 1 1.1 1.4 1.3 1.6 2.1 2.6 2.7 3.9.3.6 0 1.4-.6 1.7-.1.1-.3.1-.5.1zm6.2-.3c-.3 0-.5-.1-.8-.2-.6-.4-.7-1.2-.3-1.8 1.2-1.7 2.3-3.4 3.3-5.2.3-.6 1.1-.9 1.7-.5.6.3.9 1.1.5 1.7-1 1.9-2.2 3.8-3.5 5.6-.2.2-.5.4-.9.4zm310 196.4c-1.4 0-2.9-.2-4.5-.7-8.4-2.7-16.6-12.7-18.7-20-.4-1.4-.7-2.9-.9-4.4-8.1 3.3-15.5 10.6-15.4 21 0 1.5-1.2 2.7-2.7 2.8-1.5 0-2.7-1.2-2.7-2.7-.1-6.7 2.4-12.9 7-18 3.6-4 8.4-7.1 13.7-8.8.5-6.5 3.1-12.9 7.4-17.4 7-7.4 18.2-8.9 27.3-10.1l.7-.1c1.5-.2 2.9.9 3.1 2.3.2 1.5-.9 2.9-2.3 3.1l-.7.1c-8.6 1.2-18.4 2.5-24 8.4-3 3.2-5 7.7-5.7 12.4 7.9-1 17.7 1.3 24.3 5.7 4.3 2.9 7.1 7.8 7.2 12.7.2 4.3-1.7 8.3-5.2 11.1-2.4 1.6-5 2.6-7.9 2.6zm-18.7-26.7c.1 1.5.4 3 .8 4.4 1.7 5.8 8.7 14.2 15.1 16.3 2.8.9 5.1.5 7.2-1.1 2.7-2.1 3.2-4.8 3.1-6.6-.1-3.2-2-6.4-4.8-8.3-5.7-3.9-14.7-5.8-21.4-4.7z'/%3E%3C/g%3E%3C/svg%3E");
+
+}
+.code-img-container img {
+	width:100%;
+	//margin: auto;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0 , 0.25) 0px 25px 50px -12px;
+	margin-top: 38px;
+	margin-bottom: 10px;
+}
+/* bug with a tag inside container so I copied all the css of container to a tag 
+   a tags contain img so dont have to style the img but style the a tag instead */
+.code-img-container a{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.macbookimg {
+	background-image: url("./img/macbookpro.png");
+	background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+}
+/**.apple-logo{
+	width: 100px;
+	height: 40px;
+	background-image: url("./img/apple-developer-brandmark.svg");
+	background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+}**/
+
+

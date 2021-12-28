@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Nguyen Huu Anh Tuan - Create bootable usb</title>
+        <link rel="icon" type="image/x-icon" href="blog-assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="blog-css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="https://entykey.github.io">ENTYKEY</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('https://cdn.wccftech.com/wp-content/uploads/2021/10/macOS-Monterey-USB-installer-disk.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading">
+                            <h1>How to create a Windows 10 bootable USB</h1>
+                            <h2 class="subheading">It's easier than you think !</h2>
+                            <span class="meta">
+                                Posted by
+                                <a href="#!">Nguyễn Hữu Anh Tuấn</a>
+                                on December 26, 2021
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p>Every Windows user should have a Windows 10 boot drive around at all times. It can save you from future headaches if you run into issues with your computer.</p>
+						<img src="https://techspying.com/wp-content/uploads/2021/05/How-to-create-window-10-bootable-usb-drive-Easy-ways.png" />
+                        <p>Creating a Windows 10 bootable USB drive is something you should definitely do if you own a Windows computer. The backup media can save you both time and a headache if you ever need to reinstall Windows. And if you're building a gaming PC, this is one of the last things you'll need to finalize your build. (You can also create a boot drive for Windows 11, if you're wanting to test out the newest version of Windows before it's released on Oct. 5.)</p>
+                        <p>Besides an empty 8GB USB drive and a Windows PC, you'll need to set aside about 30 minutes, maybe longer, depending on your internet speed.</p>
+                        <p>For those curious, it's possible to use a Mac to create a Windows 10 boot drive, but the process is fairly involved and requires familiarity with Terminal, the Mac's command-line tool. It's not a process that I'd recommend for the average user. I recently built my first gaming PC, and despite my mild comfort level with Terminal, I still found using a Windows computer to be a safer and easier process.</p>
+						<img src="https://akjpsingh65.files.wordpress.com/2015/08/windows-10-imac-1024x574.jpg?w=625&h=350" />
+                        <h2 class="section-heading">Use Microsoft's media creation tool</h2>
+                        <p>Microsoft has a dedicated tool that you can use to download the Windows 10 system image (also referred to as ISO) and create your bootable USB drive.</p>
+                        <p>1. Go to this page, scroll down to Create Windows Installation Media and click on Download tool now. </p>
+                        <!--<blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>-->
+                        <p>2. Once the download finishes, double-click the file called MediaCreationToolxxxx to run it. (The last four digits of the file name indicate the version number of Windows 10. Right now, the filename is MediaCreationTool21H1, but that will change as newer versions are released.) The file should be in your Downloads folder.</p>
+						<img src="https://hanoicomputercdn.com/media/news/78_media_creation_tool_2.png" />
+						<img src="https://www.tenforums.com/attachments/installation-upgrade/48020d1485959504t-windows-10-professional-isnt-media-creation-tool-4242424242.png" />
+						<p>After you have followed all the steps above, restart the pc and plug the usb into it then spam the F12 key to enter boot menu</p>
+						<img src="https://docs.oracle.com/cd/E62159_01/html/E62171/figures/ConcBoot.jpg" />
+						<p>then select "Boot from USB-CD"</p>
+						<img src="https://www.groovypost.com/wp-content/uploads/2015/08/3-Install-Device-Moved-Up-in-Boot-Priority-BIOS.png" />
+						<p>It will automaticly run for a while (about 20m - depends on your computer and your usb type)</p>
+						<img src="https://www.wikihow.com/images/thumb/b/b8/Install-Windows-10-Step-16.jpg/v4-460px-Install-Windows-10-Step-16.jpg.webp" />
+						<p>then enter your account for the pc, we recommend you use your Microsoft account by default. You can always change it later !</p>
+						<img src="https://www.windowscentral.com/sites/wpcentral.com/files/styles/large/public/field/image/2019/12/local-account-settings-windows-10-setup.jpg" />
+						<p>NOW, everything done!! It's time to enjoy :>>></p>
+						<img src="https://upload.wikimedia.org/wikipedia/vi/5/5a/Windows_10_Screenshot.png" />
+                        <!--<h2 class="section-heading">Reaching for the Stars</h2>
+                        <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
+                        <a href="#!"><img class="img-fluid" src="assets/img/post-sample-image.jpg" alt="..." /></a>
+                        <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+                        <p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</p>
+                        <p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p>
+						-->
+                        <p>
+                            Posted by Nguyễn Hữu Anh Tuấn
+                            <a href="http://entykey.github.io">ENTYKEY</a>
+                            &middot; 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2021</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="blog-js/scripts.js"></script>
+    </body>
+</html>
+
